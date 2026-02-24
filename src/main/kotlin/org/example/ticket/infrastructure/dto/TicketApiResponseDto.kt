@@ -1,4 +1,4 @@
-package org.example.ticket.infra.dto
+package org.example.ticket.infrastructure.dto
 
 import org.example.ticket.domain.model.Ticket
 import java.math.BigDecimal
@@ -8,10 +8,12 @@ data class TicketApiResponseDto(
     val performanceDate: LocalDateTime,
     val price: BigDecimal
 ) {
-    fun toTicket(): Ticket {
+    fun toTicket(barcode: String): Ticket {
         return Ticket(
-            expirationAt = performanceDate,
-            originalPrice = price,
+            barcode = barcode,
+            eventDateTime = performanceDate,
+            originalPrice = price
         )
     }
 }
+

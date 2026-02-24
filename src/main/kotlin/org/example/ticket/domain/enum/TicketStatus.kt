@@ -1,4 +1,4 @@
-package org.example.ticket.domain.enumeration
+package org.example.ticket.domain.enum
 
 enum class TicketStatus {
     ON_SALE,

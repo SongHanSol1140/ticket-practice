@@ -1,43 +1,50 @@
 package org.example.ticket.domain.model
 
-import org.example.ticket.domain.enumeration.TicketStatus
-import org.example.ticket.domain.enumeration.TicketType
+import org.example.ticket.domain.enum.TicketStatus
+import org.example.ticket.domain.enum.TicketType
+import org.springframework.cglib.core.Local
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 class Ticket(
-    val id: Long? = null,
-    val expirationAt: LocalDateTime,
-    val originalPrice: BigDecimal,
-    private var sellingPrice: BigDecimal? = null,
-    val ticketStatus: TicketStatus = TicketStatus.ON_SALE,
+    val id: Long? = null, // ? => DB에 넘기기전에 id를 안넣으려고 (자동생성)
+    val barcode: String,
+    val eventDateTime: LocalDateTime,
+    val originalPrice: BigDecimal, // BigDecimal => 10진수로 저장(소수점 계산을 위해)
+    val sellingPrice: BigDecimal? = null,
+    var ticketStatus: TicketStatus = TicketStatus.ON_SALE,
+    var ticketType: TicketType? = null
 ) {
     companion object {
-        val ACTIVATION_DEAD_LINE: LocalDateTime = LocalDateTime.now().plusHours(3L)
-        private val HALF = BigDecimal("0.5")
+        fun ticketBarcodeCheck(barcode: String) {
+            require(barcode.length == 8) { "바코드는 8자리여야 합니다." }
+        }
 
-        fun ticketType(varCode: String): TicketType {
-            return if (varCode.contains("MELON")) {
+        fun ticketTimeCheck(eventTime: LocalDateTime) {
+            val deadLine: LocalDateTime = eventTime.plusHours(3)
+            require(eventTime.isAfter(deadLine)) {
+                "공연 시작 3시간 전까지만 등록할 수 있습니다."
+            }
+        }
+
+        fun ticketTypeCheck(barcode: String): TicketType {
+            return if (barcode.all { it.isLetter() }) {
                 TicketType.MELON
             } else {
                 TicketType.NOL
             }
         }
+
+
     }
 
     init {
-        require(expirationAt.isAfter(ACTIVATION_DEAD_LINE)) { "ticket cannot be registered after expiration" }
+        ticketBarcodeCheck(barcode);
+        ticketTimeCheck(eventDateTime);
+        ticketType = ticketTypeCheck(barcode);
     }
 
-    fun applySellerOfferPrice(offerPrice: BigDecimal) {
-        val isPerformanceDay = LocalDateTime.now().toLocalDate() == expirationAt.toLocalDate()
-        if (isPerformanceDay) {
-            val maxAllowedPrice = originalPrice.multiply(HALF)
-            require(offerPrice <= maxAllowedPrice) {
-                "on performance day, selling price must be <= 50% of regular price"
-            }
-        }
-
-        this.sellingPrice = offerPrice
-    }
 }
+
+
+

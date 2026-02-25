@@ -52,6 +52,8 @@ class Ticket(
 
     init {
         ticketBarcodeCheck(barcode);
+        ticketTimeCheck(expirationDateTime);
+
     }
 
     fun applySellerOfferPrice(offerPrice: BigDecimal) {

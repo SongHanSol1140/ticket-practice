@@ -17,11 +17,12 @@ class TicketService (
 
         val ticketResponseDto = apiClient.getTicket(ticketCreationDto.barcode);
         val ticket = ticketResponseDto.toTicket(ticketCreationDto.barcode, ticketType);
-        Ticket.ticketTimeCheck(ticket.expirationDateTime)
         ticketRepository.save(ticket)
 
     };
-//    fun applySellerOfferPrice() {
+    fun applySellerOfferPrice(barcode: String) {
         // TODO : 구현
-//    };
+
+
+    };
 }

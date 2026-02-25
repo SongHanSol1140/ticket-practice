@@ -7,14 +7,14 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Component
-class NolTicketApiClient : TicketApiClient {
+class MolTicketApiClient: TicketApiClient {
     override fun getTicket(barcode: String): TicketApiResponseDto {
         return TicketApiResponseDto(
             performanceDateTime = LocalDateTime.now().plusDays(5),
-            price = BigDecimal.valueOf(20000)
+            price = BigDecimal.valueOf(30000)
         )
     }
     override fun type(varCode: String): TicketType {
-        return TicketType.NOL
+        return TicketType.MELON
     }
 }

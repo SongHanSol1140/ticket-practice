@@ -34,7 +34,7 @@ class TicketTest {
             Ticket(
                 barcode = "ABCDEFGH",
                 sellerName = "Seller A",
-                expirationDateTime = Ticket.getTicketDeadLine().minusSeconds(1),
+                expirationDateTime = LocalDateTime.now().plusHours(1).minusSeconds(1),
                 originalPrice = BigDecimal.TEN,
                 ticketType = TicketType.MELON
             )
@@ -48,7 +48,7 @@ class TicketTest {
             id = 1L,
             barcode = "ABCDEFGH",
             sellerName = "Seller A",
-            expirationDateTime = Ticket.getTicketDeadLine().plusSeconds(1),
+            expirationDateTime = LocalDateTime.now().plusHours(1).minusSeconds(1),
             originalPrice = ticketPrice,
             ticketType = TicketType.MELON
         )

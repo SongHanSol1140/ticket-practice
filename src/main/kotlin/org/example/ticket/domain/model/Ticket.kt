@@ -19,7 +19,7 @@ class Ticket(
     val originalPrice: BigDecimal, // BigDecimal => 10진수로 저장(소수점 계산을 위해)
     val sellerName: String,
     var sellingPrice: BigDecimal? = null,
-    var ticketStatus: TicketStatus = TicketStatus.ON_SALE,
+    private var ticketStatus: TicketStatus = TicketStatus.ON_SALE,
     val ticketType: TicketType
 ) {
     companion object {
@@ -68,9 +68,14 @@ class Ticket(
 
         sellingPrice = offerPrice
     }
+    fun reSale(offerSellerName: String, offerPrice: BigDecimal) {
+        require(ticketStatus == TicketStatus.SOLD) { "구매한 티켓만 판매할 수 있습니다." }
+        ticketStatus = TicketStatus.ON_SALE
+        applySellerOfferPrice(offerSellerName, offerPrice);
+    }
 
     fun ticketOnSale() {
-        require(ticketStatus == TicketStatus.RESERVED) { "예약취소된 티켓만 재판매 할 수 있습니다." }
+        require(ticketStatus == TicketStatus.SOLD) { "구매한 티켓만 재판매 할 수 있습니다." }
         ticketStatus = TicketStatus.ON_SALE
     }
 

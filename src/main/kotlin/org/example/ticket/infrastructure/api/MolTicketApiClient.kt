@@ -14,7 +14,7 @@ class MolTicketApiClient: TicketApiClient {
             price = BigDecimal.valueOf(30000)
         )
     }
-    override fun type(varCode: String): TicketType {
+    override fun type(): TicketType {
         return TicketType.MELON
     }
 }

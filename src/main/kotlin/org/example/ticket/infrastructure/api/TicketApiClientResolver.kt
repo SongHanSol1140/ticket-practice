@@ -7,6 +7,6 @@ class TicketApiClientResolver (
 ){
     fun resolve(barcode: String): TicketApiClient {
         val ticketType = Ticket.ticketTypeCheck(barcode)
-        return ticketApiClients.first { it.type(barcode) == ticketType }
+        return ticketApiClients.first { it.type() == ticketType }
     }
 }

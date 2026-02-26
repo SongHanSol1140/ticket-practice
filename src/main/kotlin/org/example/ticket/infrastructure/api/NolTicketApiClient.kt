@@ -14,7 +14,7 @@ class NolTicketApiClient : TicketApiClient {
             price = BigDecimal.valueOf(20000)
         )
     }
-    override fun type(varCode: String): TicketType {
+    override fun type(): TicketType {
         return TicketType.NOL
     }
 }

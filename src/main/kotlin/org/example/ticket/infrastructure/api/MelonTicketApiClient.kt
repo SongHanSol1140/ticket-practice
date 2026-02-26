@@ -15,7 +15,7 @@ class MelonTicketApiClient : TicketApiClient{
             price = BigDecimal.valueOf(10000)
         )
     }
-    override fun type(varCode: String): TicketType {
+    override fun type(): TicketType {
         return TicketType.MELON
     }
 }

@@ -5,6 +5,6 @@ import org.example.ticket.infrastructure.dto.TicketApiResponseDto
 
 interface TicketApiClient {
     fun getTicket(barcode: String): TicketApiResponseDto
-    fun type(varCode: String) : TicketType
+    fun type() : TicketType
 
 }

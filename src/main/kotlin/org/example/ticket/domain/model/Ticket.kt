@@ -17,6 +17,7 @@ class Ticket(
     val barcode: String,
     val expirationDateTime: LocalDateTime,
     val originalPrice: BigDecimal, // BigDecimal => 10진수로 저장(소수점 계산을 위해)
+    val sellerName: String,
     var sellingPrice: BigDecimal? = null,
     var ticketStatus: TicketStatus = TicketStatus.ON_SALE,
     val ticketType: TicketType
@@ -57,7 +58,8 @@ class Ticket(
         ticketTimeCheck(expirationDateTime)
     }
 
-    fun applySellerOfferPrice(offerPrice: BigDecimal) {
+    fun applySellerOfferPrice(offerSellerName: String, offerPrice: BigDecimal) {
+        require(sellerName == offerSellerName){"티켓에 등록된 판매자가 아닙니다."}
         require(offerPrice >= BigDecimal.ZERO) { "판매가격에 음수는 입력할 수 없습니다." }
         require(offerPrice <= originalPrice) { "티켓의 가격은 정가를 초과할 수 없습니다." }
         val isPerformanceDateTime = LocalDateTime.now().toLocalDate() == expirationDateTime.toLocalDate()

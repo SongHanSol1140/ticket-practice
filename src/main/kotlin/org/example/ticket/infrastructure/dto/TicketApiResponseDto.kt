@@ -13,7 +13,7 @@ data class TicketApiResponseDto(
         return Ticket(
             barcode = barcode,
             ticketType = ticketType,
-            sellerId = sellerId,
+            sellerName = sellerId,
             expirationDateTime = performanceDateTime,
             originalPrice = price
         )

@@ -15,6 +15,7 @@ class TicketTest {
         val ticket = Ticket(
             id = 1L,
             barcode = "ABCDEFGH",
+            sellerName = "Seller A",
             expirationDateTime = LocalDateTime.now().plusHours(1),
             originalPrice = BigDecimal.TEN,
             ticketType = TicketType.MELON
@@ -32,7 +33,8 @@ class TicketTest {
         assertThrows<IllegalArgumentException> {
             Ticket(
                 barcode = "ABCDEFGH",
-                expirationDateTime = Ticket.getActivationDeadLine().minusSeconds(1),
+                sellerName = "Seller A",
+                expirationDateTime = Ticket.getTicketDeadLine().minusSeconds(1),
                 originalPrice = BigDecimal.TEN,
                 ticketType = TicketType.MELON
             )
@@ -45,13 +47,14 @@ class TicketTest {
         val ticket = Ticket(
             id = 1L,
             barcode = "ABCDEFGH",
-            expirationDateTime = Ticket.getActivationDeadLine().plusSeconds(1),
+            sellerName = "Seller A",
+            expirationDateTime = Ticket.getTicketDeadLine().plusSeconds(1),
             originalPrice = ticketPrice,
             ticketType = TicketType.MELON
         )
 
         assertThrows<IllegalArgumentException> {
-            ticket.applySellerOfferPrice(BigDecimal.valueOf(100.0))
+            ticket.applySellerOfferPrice("seller_A", BigDecimal.valueOf(100.0))
         }
     }
 
@@ -61,6 +64,7 @@ class TicketTest {
             Ticket(
                 id = 1L,
                 barcode = "ABCDEFGH",
+                sellerName = "Seller A",
                 expirationDateTime = LocalDateTime.now().plusDays(1),
                 originalPrice = BigDecimal.TEN,
                 ticketType = TicketType.MELON

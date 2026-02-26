@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import org.example.ticket.domain.enum.TicketStatus
 import org.example.ticket.domain.enum.TicketType
-import org.springframework.cglib.core.Local
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -75,12 +74,12 @@ class Ticket(
     }
 
     fun ticketOnSale() {
-        require(ticketStatus == TicketStatus.SOLD) { "구매한 티켓만 재판매 할 수 있습니다." }
+        require(ticketStatus == TicketStatus.RESERVED) { "예약중인 티켓만 판매중으로 되돌릴 수 있습니다." }
         ticketStatus = TicketStatus.ON_SALE
     }
 
     fun ticketReserve() {
-        require(ticketStatus == TicketStatus.ON_SALE) { "예약중인 티켓만 판매완료할 수 있습니다." }
+        require(ticketStatus == TicketStatus.ON_SALE) { "판매중인 티켓만 예약할 수 있습니다"   }
         ticketStatus = TicketStatus.RESERVED
     }
 

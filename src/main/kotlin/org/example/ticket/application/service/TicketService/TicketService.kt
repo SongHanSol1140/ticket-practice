@@ -1,6 +1,7 @@
 package org.example.ticket.application.service.TicketService
 
 import org.example.ticket.application.dto.TicketCreationDto
+import org.example.ticket.application.dto.TicketSellingPriceOfferDto
 import org.example.ticket.domain.enum.TicketStatus
 import org.example.ticket.domain.model.Ticket
 import org.example.ticket.infra.repository.TicketJpaRepository
@@ -25,18 +26,25 @@ class TicketService(
         ticketRepository.save(ticket)
     };
 
-    fun applySellerOfferPrice(offerSellerName: String, barcode: String, offerPrice: BigDecimal) {
-        val ticket = ticketRepository.findByBarcode(barcode)
-        requireNotNull(ticket) { "해당 티켓 정보가 존재하지 않습니다." }
-        ticket.applySellerOfferPrice(offerSellerName, offerPrice);
+    fun applySellerOfferPrice(ticketSellingPriceOfferDto: TicketSellingPriceOfferDto) {
+        val ticket = requireNotNull(ticketRepository.findByBarcode(ticketSellingPriceOfferDto.barcode)){
+            "해당 티켓 정보가 존재하지 않습니다."
+        }
+        ticket.applySellerOfferPrice(
+            ticketSellingPriceOfferDto.sellerName,
+            ticketSellingPriceOfferDto.sellingPrice
+        )
         ticketRepository.save(ticket)
     }
 
-    fun reSaleTicket(offerSellerName: String, barcode: String, offerPrice: BigDecimal) {
-        val ticket = ticketRepository.findByBarcode(barcode)
-        requireNotNull(ticket) { "해당 티켓 정보가 존재하지 않습니다." }
-        ticket.applySellerOfferPrice(offerSellerName, offerPrice)
-        ticket.ticketStatus = TicketStatus.ON_SALE
+    fun reSaleTicket(ticketSellingPriceOfferDto: TicketSellingPriceOfferDto) {
+        val ticket = requireNotNull(ticketRepository.findByBarcode(ticketSellingPriceOfferDto.barcode)){
+            "해당 티켓 정보가 존재하지 않습니다."
+        }
+        ticket.reSale(
+            ticketSellingPriceOfferDto.sellerName,
+            ticketSellingPriceOfferDto.sellingPrice
+        )
         ticketRepository.save(ticket)
 
     }

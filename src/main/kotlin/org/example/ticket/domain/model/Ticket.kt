@@ -22,6 +22,8 @@ class Ticket(
     val ticketType: TicketType
 ) {
     companion object {
+        private val HALF = BigDecimal("0.5")
+
         fun getActivationDeadLine(): LocalDateTime {
             return LocalDateTime.now().minusHours(1);
         };
@@ -33,7 +35,7 @@ class Ticket(
         fun ticketTimeCheck(performanceDateTime: LocalDateTime) {
             val now = LocalDateTime.now()
             val deadLine: LocalDateTime = performanceDateTime.minusHours(1)
-            require(now.isAfter(deadLine)) {
+            require(now.isBefore(deadLine)) {
                 "공연 시작 1시간 전까지만 등록할 수 있습니다."
             }
         }
@@ -51,13 +53,20 @@ class Ticket(
     }
 
     init {
-        ticketBarcodeCheck(barcode);
-        ticketTimeCheck(expirationDateTime);
-
+        ticketBarcodeCheck(barcode)
+        ticketTimeCheck(expirationDateTime)
     }
 
     fun applySellerOfferPrice(offerPrice: BigDecimal) {
+        require(offerPrice >= BigDecimal.ZERO) { "판매가격에 음수는 입력할 수 없습니다." }
+        require(offerPrice <= originalPrice) { "티켓의 가격은 정가를 초과할 수 없습니다." }
         val isPerformanceDateTime = LocalDateTime.now().toLocalDate() == expirationDateTime.toLocalDate()
+        if (isPerformanceDateTime) {
+            val maxAllowedPrice = originalPrice.multiply(HALF)
+            require(offerPrice <= maxAllowedPrice) { "공연 당일에는 가격을 정가의 50% 이하로만 설정할 수 있습니다." }
+        }
+
+        sellingPrice = offerPrice
     }
 
 }

@@ -15,7 +15,7 @@ class TicketTest {
         val ticket = Ticket(
             id = 1L,
             barcode = "ABCDEFGH",
-            expirationDateTime = LocalDateTime.now().plusDays(1),
+            expirationDateTime = LocalDateTime.now().plusHours(1),
             originalPrice = BigDecimal.TEN,
             ticketType = TicketType.MELON
         )

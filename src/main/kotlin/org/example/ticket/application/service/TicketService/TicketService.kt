@@ -5,6 +5,7 @@ import org.example.ticket.domain.model.Ticket
 import org.example.ticket.infra.repository.TicketJpaRepository
 import org.example.ticket.infrastructure.api.TicketApiClient
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class TicketService (
@@ -14,15 +15,16 @@ class TicketService (
     fun createTicket(ticketCreationDto: TicketCreationDto){
         val ticketType = Ticket.ticketTypeCheck(ticketCreationDto.barcode);
         val apiClient = ticketApiClient.first { it.type(ticketCreationDto.barcode) == ticketType };
-
         val ticketResponseDto = apiClient.getTicket(ticketCreationDto.barcode);
         val ticket = ticketResponseDto.toTicket(ticketCreationDto.barcode, ticketType);
         ticketRepository.save(ticket)
 
     };
-    fun applySellerOfferPrice(barcode: String) {
-        // TODO : 구현
 
-
-    };
+    fun applySellerOfferPrice(barcode: String, offerPrice: BigDecimal) {
+        val ticket = ticketRepository.findByBarcode(barcode)
+        requireNotNull(ticket){"해당 티켓 정보가 존재하지 않습니다."}
+        ticket.applySellerOfferPrice(offerPrice)
+        ticketRepository.save(ticket)
+    }
 }

@@ -4,19 +4,19 @@ import org.example.ticket.application.dto.TicketCreationDto
 import org.example.ticket.domain.model.Ticket
 import org.example.ticket.infra.repository.TicketJpaRepository
 import org.example.ticket.infrastructure.api.TicketApiClient
+import org.example.ticket.infrastructure.api.TicketApiClientResolver
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
 class TicketService (
-    private val ticketApiClient: List<TicketApiClient>,
+    private val ticketApiClientResolver: TicketApiClientResolver,
     private val ticketRepository: TicketJpaRepository
 ) {
     fun createTicket(ticketCreationDto: TicketCreationDto){
-        val ticketType = Ticket.ticketTypeCheck(ticketCreationDto.barcode);
-        val apiClient = ticketApiClient.first { it.type(ticketCreationDto.barcode) == ticketType };
-        val ticketResponseDto = apiClient.getTicket(ticketCreationDto.barcode);
-        val ticket = ticketResponseDto.toTicket(ticketCreationDto.barcode, ticketType);
+        val apiClient = ticketApiClientResolver.resolve(ticketCreationDto.barcode)
+        val ticketResponseDto = apiClient.getTicket(ticketCreationDto.barcode)
+        val ticket = ticketResponseDto.toTicket(ticketCreationDto.barcode, apiClient.type())
         ticketRepository.save(ticket)
 
     };

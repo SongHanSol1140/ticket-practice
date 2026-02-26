@@ -1,7 +1,9 @@
 package org.example.ticket.infrastructure.api
 
 import org.example.ticket.domain.model.Ticket
+import org.springframework.stereotype.Component
 
+@Component
 class TicketApiClientResolver (
     private val ticketApiClients: List<TicketApiClient>
 ){

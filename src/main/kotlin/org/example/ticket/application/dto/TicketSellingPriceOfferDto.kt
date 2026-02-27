@@ -6,5 +6,4 @@ data class TicketSellingPriceOfferDto(
     val sellerName: String,
     val barcode: String,
     val sellingPrice: BigDecimal,
-
 )

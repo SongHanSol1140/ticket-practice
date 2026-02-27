@@ -54,7 +54,9 @@ class Ticket(
             "공연 시작 1시간 전까지만 등록할 수 있습니다."
         }
     }
-
+    fun getTicketStatus(): TicketStatus {
+        return ticketStatus
+    }
     fun applySellerOfferPrice(offerSellerName: String, offerPrice: BigDecimal) {
         require(sellerName == offerSellerName) { "티켓에 등록된 판매자가 아닙니다." }
         require(offerPrice >= BigDecimal.ZERO) { "판매가격에 음수는 입력할 수 없습니다." }

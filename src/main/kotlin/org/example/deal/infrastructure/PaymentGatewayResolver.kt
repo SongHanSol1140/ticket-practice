@@ -1,7 +1,9 @@
 package org.example.deal.infrastructure
 
 import org.example.deal.domain.enum.PaymentType
+import org.springframework.stereotype.Component
 
+@Component
 class PaymentGatewayResolver(
     private val gateways: List<PaymentGateway>
 ) {

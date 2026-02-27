@@ -9,15 +9,16 @@ import org.example.deal.repository.DealJpaRepository
 import org.example.ticket.domain.model.Ticket
 import org.example.ticket.infra.repository.TicketJpaRepository
 import org.example.user.repository.UserJpaRepository
+import org.springframework.stereotype.Service
 
+@Service
 class DealService (
-    private val userRepository: UserJpaRepository,
     private val dealRepository: DealJpaRepository,
     private val ticketRepository: TicketJpaRepository,
     private val paymentGatewayResolver: PaymentGatewayResolver
 ){
 
-    fun dealStart(dealStartDto: DealStartDto){
+    fun dealStart(dealStartDto: DealStartDto): Deal{
         val ticket = requireNotNull(ticketRepository.findByBarcode(dealStartDto.barcode)){"존재하지 않는 티켓입니다."}
         val sellingPrice = requireNotNull(ticket.sellingPrice){"판매가가 설정되지 않았습니다."}
 
@@ -29,10 +30,11 @@ class DealService (
         )
 
         ticket.ticketReserve();
-        dealRepository.save(deal)
+        ticketRepository.save(ticket)
+        return dealRepository.save(deal)
     }
 
-    fun dealEnd(dealEndDto: DealEndDto){
+    fun dealEnd(dealEndDto: DealEndDto): Deal{
         val deal = requireNotNull(dealRepository.findByBarcode(dealEndDto.barcode)){"존재하지 않는 거래입니다."}
         val ticket = requireNotNull(ticketRepository.findByBarcode(dealEndDto.barcode)){"존재하지 않는 티켓입니다."}
         val dealExpiredCheck = deal.reservedTimeExpiredCheck();
@@ -45,6 +47,8 @@ class DealService (
         paymentGateway.pay(deal.buyerName, deal.sellerName, deal.sellingPrice)
         deal.dealComplete()
         ticket.ticketSold()
+        ticketRepository.save(ticket)
+        return dealRepository.save(deal)
     }
 
 }

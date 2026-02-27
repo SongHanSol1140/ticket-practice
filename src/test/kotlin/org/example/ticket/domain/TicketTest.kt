@@ -43,18 +43,18 @@ class TicketTest {
 
     @Test
     fun `공연 당일에는 가격을 정가의 50% 이하로만 설정 할 수 있다`() {
-        val ticketPrice = BigDecimal.TEN
+        val ticketPrice = BigDecimal(10000)
         val ticket = Ticket(
             id = 1L,
             barcode = "ABCDEFGH",
             sellerName = "Seller A",
-            expirationDateTime = LocalDateTime.now().plusHours(1).minusSeconds(1),
+            expirationDateTime = LocalDateTime.now().plusHours(2),
             originalPrice = ticketPrice,
             ticketType = TicketType.MELON
         )
 
         assertThrows<IllegalArgumentException> {
-            ticket.applySellerOfferPrice("seller_A", BigDecimal.valueOf(100.0))
+            ticket.applySellerOfferPrice("Seller A", BigDecimal(6000))
         }
     }
 

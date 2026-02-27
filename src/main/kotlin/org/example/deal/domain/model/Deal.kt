@@ -17,7 +17,7 @@ class Deal(
     val buyerName: String,
     val sellingPrice: BigDecimal,
     val reservedDateTime: LocalDateTime = LocalDateTime.now(),
-    var dealStatus: DealStatus = DealStatus.RESERVED
+    private var dealStatus: DealStatus = DealStatus.RESERVED
 ) {
     companion object {}
 
@@ -37,5 +37,7 @@ class Deal(
     fun reservedTimeExpiredCheck():Boolean{
         return dealStatus == DealStatus.RESERVED && reservedDateTime.plusMinutes(10).isBefore(LocalDateTime.now())
     }
-
+    fun getDealStatus(): DealStatus {
+        return dealStatus
+    }
 }

@@ -15,6 +15,6 @@ class MolTicketApiClient: TicketApiClient {
         )
     }
     override fun type(): TicketType {
-        return TicketType.MELON
+        return TicketType.MOL
     }
 }

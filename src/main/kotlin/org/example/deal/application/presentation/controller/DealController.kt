@@ -16,11 +16,11 @@ import kotlin.String
 
 @RestController
 @RequestMapping(value = ["/deal"])
-class DealController (
+class DealController(
     private val dealService: DealService
-){
+) {
     @PostMapping("/start")
-    fun dealStart(@RequestBody dealStartDto: DealStartDto ): DealResponseDto {
+    fun dealStart(@RequestBody dealStartDto: DealStartDto): DealResponseDto {
         val deal = dealService.dealStart(dealStartDto)
         return DealResponseDto(
             barcode = deal.barcode,
@@ -31,6 +31,7 @@ class DealController (
             dealStatus = deal.getDealStatus()
         )
     }
+
     @PostMapping("/end")
     fun dealEnd(@RequestBody dealEndDto: DealEndDto): DealResponseDto {
         val deal = dealService.dealEnd(dealEndDto)

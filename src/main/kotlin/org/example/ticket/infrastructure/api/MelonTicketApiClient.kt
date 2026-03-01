@@ -7,7 +7,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Component
-class MelonTicketApiClient : TicketApiClient{
+class MelonTicketApiClient : TicketApiClient {
     override fun getTicket(barcode: String): TicketApiResponseDto {
         return TicketApiResponseDto(
 
@@ -15,6 +15,7 @@ class MelonTicketApiClient : TicketApiClient{
             price = BigDecimal.valueOf(10000)
         )
     }
+
     override fun type(): TicketType {
         return TicketType.MELON
     }

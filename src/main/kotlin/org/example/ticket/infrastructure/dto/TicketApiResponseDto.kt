@@ -9,7 +9,7 @@ data class TicketApiResponseDto(
     val performanceDateTime: LocalDateTime,
     val price: BigDecimal
 ) {
-    fun toTicket(barcode: String, sellerId: String, ticketType: TicketType,): Ticket {
+    fun toTicket(barcode: String, sellerId: String, ticketType: TicketType): Ticket {
         return Ticket(
             barcode = barcode,
             ticketType = ticketType,

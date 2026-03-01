@@ -44,8 +44,8 @@ class Ticket(
     }
 
     fun getTicketDeadLine(): LocalDateTime {
-        return expirationDateTime.minusHours(1);
-    };
+        return expirationDateTime.minusHours(1)
+    }
 
     fun ticketTimeCheck(performanceDateTime: LocalDateTime) {
         val now = LocalDateTime.now()
@@ -54,13 +54,16 @@ class Ticket(
             "공연 시작 1시간 전까지만 등록할 수 있습니다."
         }
     }
+
     fun getTicketStatus(): TicketStatus {
         return ticketStatus
     }
+
     fun applySellerOfferPrice(offerSellerName: String, offerPrice: BigDecimal) {
         require(sellerName == offerSellerName) { "티켓에 등록된 판매자가 아닙니다." }
         require(offerPrice >= BigDecimal.ZERO) { "판매가격에 음수는 입력할 수 없습니다." }
         require(offerPrice <= originalPrice) { "티켓의 가격은 정가를 초과할 수 없습니다." }
+        require(ticketStatus == TicketStatus.ON_SALE) { "판매중인 제품만 가격을 수정할 수 있습니다." }
         val isPerformanceDateTime = LocalDateTime.now().toLocalDate() == expirationDateTime.toLocalDate()
         if (isPerformanceDateTime) {
             val maxAllowedPrice = originalPrice.multiply(HALF)
@@ -69,10 +72,11 @@ class Ticket(
 
         sellingPrice = offerPrice
     }
+
     fun reSale(offerSellerName: String, offerPrice: BigDecimal) {
         require(ticketStatus == TicketStatus.SOLD) { "구매한 티켓만 판매할 수 있습니다." }
         ticketStatus = TicketStatus.ON_SALE
-        applySellerOfferPrice(offerSellerName, offerPrice);
+        applySellerOfferPrice(offerSellerName, offerPrice)
     }
 
     fun ticketOnSale() {
@@ -81,7 +85,7 @@ class Ticket(
     }
 
     fun ticketReserve() {
-        require(ticketStatus == TicketStatus.ON_SALE) { "판매중인 티켓만 예약할 수 있습니다"   }
+        require(ticketStatus == TicketStatus.ON_SALE) { "판매중인 티켓만 예약할 수 있습니다" }
         ticketStatus = TicketStatus.RESERVED
     }
 

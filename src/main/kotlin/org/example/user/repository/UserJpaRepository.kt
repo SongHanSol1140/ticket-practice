@@ -13,7 +13,4 @@ object UserJpaRepository {
     )
 
     fun findByName(name: String): User? = users.find { it.name == name }
-
-
-
 }

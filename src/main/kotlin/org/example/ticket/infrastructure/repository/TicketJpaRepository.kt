@@ -3,7 +3,7 @@ package org.example.ticket.infra.repository
 import org.example.ticket.domain.model.Ticket
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface TicketJpaRepository: JpaRepository<Ticket, Long> {
+interface TicketJpaRepository : JpaRepository<Ticket, Long> {
     fun findByBarcode(barcode: String): Ticket? // ? 넣어야 null 처리되서 조회 안될때 에러가 안남
 }
 

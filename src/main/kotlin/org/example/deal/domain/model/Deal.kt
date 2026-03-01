@@ -25,18 +25,21 @@ class Deal(
         require(sellerName != buyerName) { "본인이 등록한 티켓은 구매할 수 없습니다." }
     }
 
-    fun dealComplete(){
+    fun dealComplete() {
         require(dealStatus == DealStatus.RESERVED) { "예약 상태인 거래만 완료할 수 있습니다." }
         dealStatus = DealStatus.COMPLETED
 
     }
-    fun dealCancel(){
+
+    fun dealCancel() {
         require(dealStatus == DealStatus.RESERVED) { "예약 상태인 거래만 취소 할 수 있습니다." }
         dealStatus = DealStatus.CANCELLED
     }
-    fun reservedTimeExpiredCheck():Boolean{
+
+    fun reservedTimeExpiredCheck(): Boolean {
         return dealStatus == DealStatus.RESERVED && reservedDateTime.plusMinutes(10).isBefore(LocalDateTime.now())
     }
+
     fun getDealStatus(): DealStatus {
         return dealStatus
     }

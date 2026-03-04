@@ -1,4 +1,4 @@
-package org.example.deal.infrastructure
+package org.example.deal.infrastructure.api
 
 import org.example.deal.domain.enum.PaymentType
 import org.springframework.stereotype.Component

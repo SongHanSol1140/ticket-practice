@@ -1,4 +1,4 @@
-package org.example.deal.repository
+package org.example.deal.infrastructure.repository
 
 import org.example.deal.domain.model.Deal
 import org.springframework.data.jpa.repository.JpaRepository

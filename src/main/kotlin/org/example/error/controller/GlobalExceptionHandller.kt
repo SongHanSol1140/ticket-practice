@@ -1,4 +1,4 @@
-package org.example.error.contoroller
+package org.example.error.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -1,4 +1,4 @@
-package org.example.ticket.infra.repository
+package org.example.ticket.infrastructure.repository
 
 import org.example.ticket.domain.model.Ticket
 import org.springframework.data.jpa.repository.JpaRepository

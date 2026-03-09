@@ -16,7 +16,7 @@ class TicketTest {
             id = 1L,
             barcode = "ABCDEFGH",
             sellerName = "Seller A",
-            expirationDateTime = LocalDateTime.now().plusHours(1),
+            expirationDateTime = LocalDateTime.now().plusHours(2),
             originalPrice = BigDecimal.TEN,
             ticketType = TicketType.MELON
         )
@@ -60,15 +60,17 @@ class TicketTest {
 
     @Test
     fun `양도 가격은 정가를 초과 할 수 없다`() {
+        val ticket = Ticket(
+            id = 1L,
+            barcode = "ABCDEFGH",
+            sellerName = "Seller A",
+            expirationDateTime = LocalDateTime.now().plusDays(1),
+            originalPrice = BigDecimal.TEN,
+            ticketType = TicketType.MELON
+        )
+
         assertThrows<IllegalArgumentException> {
-            Ticket(
-                id = 1L,
-                barcode = "ABCDEFGH",
-                sellerName = "Seller A",
-                expirationDateTime = LocalDateTime.now().plusDays(1),
-                originalPrice = BigDecimal.TEN,
-                ticketType = TicketType.MELON
-            )
+            ticket.applySellerOfferPrice("Seller A", BigDecimal(20))
         }
     }
 }

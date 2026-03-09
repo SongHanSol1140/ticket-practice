@@ -1,6 +1,6 @@
 package org.example.ticket.infrastructure.api
 
-import org.example.ticket.domain.model.Ticket
+import org.example.ticket.domain.enum.TicketType
 import org.springframework.stereotype.Component
 
 @Component
@@ -8,7 +8,15 @@ class TicketApiClientResolver(
     private val ticketApiClients: List<TicketApiClient>
 ) {
     fun resolve(barcode: String): TicketApiClient {
-        val ticketType = Ticket.ticketTypeCheck(barcode)
+        val ticketType = resolveTicketType(barcode)
         return ticketApiClients.first { it.type() == ticketType }
+    }
+
+    private fun resolveTicketType(barcode: String): TicketType {
+        return when {
+            barcode.all { it.isLetter() } -> TicketType.MELON
+            barcode.all { it.isDigit() } -> TicketType.NOL
+            else -> TicketType.MOL
+        }
     }
 }

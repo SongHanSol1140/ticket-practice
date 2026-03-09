@@ -19,6 +19,8 @@ class Deal(
     val reservedDateTime: LocalDateTime = LocalDateTime.now(),
     private var dealStatus: DealStatus = DealStatus.RESERVED
 ) {
+
+
     companion object {}
 
     init {

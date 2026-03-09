@@ -17,10 +17,13 @@ class Ticket(
     val expirationDateTime: LocalDateTime,
     val originalPrice: BigDecimal, // BigDecimal => 10진수로 저장(소수점 계산을 위해)
     val sellerName: String,
-    var sellingPrice: BigDecimal? = null,
-    private var ticketStatus: TicketStatus = TicketStatus.ON_SALE,
     val ticketType: TicketType
 ) {
+    var sellingPrice: BigDecimal? = null
+        private set
+    var ticketStatus: TicketStatus = TicketStatus.ON_SALE
+        private set
+
     companion object {
         private val HALF = BigDecimal("0.5")
 
@@ -28,35 +31,23 @@ class Ticket(
             require(barcode.length == 8) { "바코드는 8자리여야 합니다." }
         }
 
-        fun ticketTypeCheck(barcode: String): TicketType {
-            return when {
-                barcode.all { it.isLetter() } -> TicketType.MELON
-                barcode.all { it.isDigit() } -> TicketType.NOL
-                else -> TicketType.MOL
-            }
-
-        }
     }
 
     init {
         ticketBarcodeCheck(barcode)
-        ticketTimeCheck(expirationDateTime)
+        ticketTimeCheck()
     }
 
-    fun getTicketDeadLine(): LocalDateTime {
+    private fun getTicketDeadLine(): LocalDateTime {
         return expirationDateTime.minusHours(1)
     }
 
-    fun ticketTimeCheck(performanceDateTime: LocalDateTime) {
+    private fun ticketTimeCheck() {
         val now = LocalDateTime.now()
-        val deadLine: LocalDateTime = getTicketDeadLine();
+        val deadLine = getTicketDeadLine()
         require(now.isBefore(deadLine)) {
             "공연 시작 1시간 전까지만 등록할 수 있습니다."
         }
-    }
-
-    fun getTicketStatus(): TicketStatus {
-        return ticketStatus
     }
 
     fun applySellerOfferPrice(offerSellerName: String, offerPrice: BigDecimal) {
@@ -101,7 +92,6 @@ class Ticket(
         require(now.isAfter(deadLine)) { "만료되지 않은 티켓입니다." }
         ticketStatus = TicketStatus.EXPIRED
     }
-
 }
 
 

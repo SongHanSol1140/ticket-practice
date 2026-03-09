@@ -1,7 +1,7 @@
 package org.example.deal.infrastructure.api
 
 import org.example.deal.domain.enum.PaymentType
-import org.example.user.repository.UserJpaRepository
+import org.example.user.infrastructure.repository.UserJpaRepository
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 

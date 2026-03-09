@@ -5,8 +5,6 @@ import org.example.deal.domain.enum.DealStatus
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.assertj.core.api.Assertions.assertThat
-import org.example.ticket.domain.enum.TicketType
-import org.example.ticket.domain.model.Ticket
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -43,10 +41,10 @@ class DealTest {
             sellerName = "판매자1",
             buyerName = "구매자1",
             sellingPrice = BigDecimal(10000),
-            dealStatus = DealStatus.COMPLETED
         )
+        deal.dealComplete() // RESERVED → COMPLETED
         assertThrows<IllegalArgumentException> {
-            deal.dealComplete()
+            deal.dealComplete() // COMPLETED → 💥 예외
         }
     }
 

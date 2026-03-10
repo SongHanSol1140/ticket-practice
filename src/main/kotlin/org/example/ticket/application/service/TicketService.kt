@@ -34,15 +34,14 @@ class TicketService(
         )
     }
     @Transactional
-    fun applySellerOfferPrice(ticketSellingPriceOfferDto: TicketSellingPriceOfferDto): TicketResponseDto {
-        val ticket = requireNotNull(ticketRepository.findByBarcode(ticketSellingPriceOfferDto.barcode)){
+    fun applySellerOfferPrice(barcode: String, ticketSellingPriceOfferDto: TicketSellingPriceOfferDto): TicketResponseDto {
+        val ticket = requireNotNull(ticketRepository.findByBarcode(barcode)){
             "해당 티켓 정보가 존재하지 않습니다."
         }
         ticket.applySellerOfferPrice(
             ticketSellingPriceOfferDto.sellerName,
             ticketSellingPriceOfferDto.sellingPrice
         )
-        ticketRepository.save(ticket)
         return TicketResponseDto(
             barcode = ticket.barcode,
             seller = ticket.sellerName,
@@ -52,23 +51,5 @@ class TicketService(
             ticketStatus = ticket.ticketStatus,
         )
     }
-    @Transactional
-    fun reSaleTicket(ticketSellingPriceOfferDto: TicketSellingPriceOfferDto): TicketResponseDto {
-        val ticket = requireNotNull(ticketRepository.findByBarcode(ticketSellingPriceOfferDto.barcode)){
-            "해당 티켓 정보가 존재하지 않습니다."
-        }
-        ticket.reSale(
-            ticketSellingPriceOfferDto.sellerName,
-            ticketSellingPriceOfferDto.sellingPrice
-        )
-        ticketRepository.save(ticket)
-        return TicketResponseDto(
-            barcode = ticket.barcode,
-            seller = ticket.sellerName,
-            originalPrice = ticket.originalPrice,
-            sellingPrice = ticket.sellingPrice,
-            expirationDate = ticket.expirationDateTime,
-            ticketStatus = ticket.ticketStatus,
-        )
-    }
+
 }

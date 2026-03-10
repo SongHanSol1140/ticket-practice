@@ -25,16 +25,13 @@ class Ticket(
         private set
 
     companion object {
-        private val HALF = BigDecimal("0.5")
-
-        fun ticketBarcodeCheck(barcode: String) {
-            require(barcode.length == 8) { "바코드는 8자리여야 합니다." }
-        }
+        private val BARCODE_LENGTH = 8;
+        private val PERFORMANCE_DAY_SALE_POLICY = BigDecimal("0.5")
 
     }
 
     init {
-        ticketBarcodeCheck(barcode)
+        require(barcode.length == BARCODE_LENGTH) { "바코드는 8자리여야 합니다." }
         ticketTimeCheck()
     }
 
@@ -54,21 +51,18 @@ class Ticket(
         require(sellerName == offerSellerName) { "티켓에 등록된 판매자가 아닙니다." }
         require(offerPrice >= BigDecimal.ZERO) { "판매가격에 음수는 입력할 수 없습니다." }
         require(offerPrice <= originalPrice) { "티켓의 가격은 정가를 초과할 수 없습니다." }
+        if (ticketStatus != TicketStatus.SOLD && LocalDateTime.now().isAfter(getTicketDeadLine())) {
+            ticketExpired()
+        }
         require(ticketStatus == TicketStatus.ON_SALE) { "판매중인 제품만 가격을 수정할 수 있습니다." }
         val isPerformanceDateTime = LocalDateTime.now().toLocalDate() == expirationDateTime.toLocalDate()
         if (isPerformanceDateTime) {
-            val maxAllowedPrice = originalPrice.multiply(HALF)
+            val maxAllowedPrice = originalPrice.multiply(PERFORMANCE_DAY_SALE_POLICY)
             require(offerPrice <= maxAllowedPrice) { "공연 당일에는 가격을 정가의 50% 이하로만 설정할 수 있습니다." }
         }
-
         sellingPrice = offerPrice
     }
 
-    fun reSale(offerSellerName: String, offerPrice: BigDecimal) {
-        require(ticketStatus == TicketStatus.SOLD) { "구매한 티켓만 판매할 수 있습니다." }
-        ticketStatus = TicketStatus.ON_SALE
-        applySellerOfferPrice(offerSellerName, offerPrice)
-    }
 
     fun ticketOnSale() {
         require(ticketStatus == TicketStatus.RESERVED) { "예약중인 티켓만 판매중으로 되돌릴 수 있습니다." }

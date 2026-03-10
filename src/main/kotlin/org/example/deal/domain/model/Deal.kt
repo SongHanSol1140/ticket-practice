@@ -15,10 +15,12 @@ class Deal(
     val barcode: String,
     val sellerName: String,
     val buyerName: String,
-    val sellingPrice: BigDecimal,
     val reservedDateTime: LocalDateTime = LocalDateTime.now(),
-    private var dealStatus: DealStatus = DealStatus.RESERVED
+    val sellingPrice: BigDecimal,
 ) {
+    var dealStatus: DealStatus = DealStatus.RESERVED
+        private set
+
 
 
     companion object {}
@@ -42,7 +44,4 @@ class Deal(
         return dealStatus == DealStatus.RESERVED && reservedDateTime.plusMinutes(10).isBefore(LocalDateTime.now())
     }
 
-    fun getDealStatus(): DealStatus {
-        return dealStatus
-    }
 }

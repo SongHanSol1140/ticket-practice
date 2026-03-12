@@ -30,7 +30,7 @@ class DealTest {
             buyerName = "구매자1",
             sellingPrice = BigDecimal(10000)
         )
-        assertThat(deal.getDealStatus()).isEqualTo(DealStatus.RESERVED)
+        assertThat(deal.dealStatus).isEqualTo(DealStatus.RESERVED)
     }
 
 

@@ -22,7 +22,6 @@ class Deal(
         private set
 
 
-
     companion object {}
 
     init {

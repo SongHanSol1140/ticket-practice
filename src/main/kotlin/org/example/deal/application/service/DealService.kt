@@ -36,7 +36,7 @@ class DealService(
             buyerName = savedDeal.buyerName,
             sellingPrice = savedDeal.sellingPrice,
             reservedDateTime = savedDeal.reservedDateTime,
-            dealStatus = savedDeal.getDealStatus()
+            dealStatus = savedDeal.dealStatus
         )
     }
     @Transactional
@@ -66,7 +66,7 @@ class DealService(
             buyerName = deal.buyerName,
             sellingPrice = deal.sellingPrice,
             reservedDateTime = deal.reservedDateTime,
-            dealStatus = deal.getDealStatus()
+            dealStatus = deal.dealStatus
         )
     }
 

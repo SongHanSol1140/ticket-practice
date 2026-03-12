@@ -8,10 +8,11 @@ class User(
     val id: Long? = null,
     val name: String,
     val role: UserRole,
-    var money: BigDecimal = BigDecimal.ZERO,
+    var money: BigDecimal = BigDecimal.ZERO
 ) {
     fun deposit(amount: BigDecimal) {
         require(amount > BigDecimal.ZERO) { "입금액은 0보다 커야 합니다." }
+        require(amount >= money) { "잔액이 부족합니다." }
         money = money.add(amount)
     }
 
@@ -20,5 +21,6 @@ class User(
         require(money >= amount) { "잔액이 부족합니다." }
         money = money.subtract(amount)
     }
+
 
 }

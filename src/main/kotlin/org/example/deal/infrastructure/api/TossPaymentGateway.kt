@@ -6,10 +6,12 @@ import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
 @Component
-class TossPaymentGateway : PaymentGateway {
+class TossPaymentGateway(
+    private val userJpaRepository: UserJpaRepository
+) : PaymentGateway {
     override fun pay(buyerName: String, sellerName: String, price: BigDecimal) {
-        val buyer = requireNotNull(UserJpaRepository.findByName(buyerName)) { "구매자 정보를 찾을 수 없습니다." }
-        val seller = requireNotNull(UserJpaRepository.findByName(sellerName)) { "판매자 정보를 찾을 수 없습니다." }
+        val buyer = requireNotNull(userJpaRepository.findByName(buyerName)) { "구매자 정보를 찾을 수 없습니다." }
+        val seller = requireNotNull(userJpaRepository.findByName(sellerName)) { "판매자 정보를 찾을 수 없습니다." }
         buyer.withdraw(price)
         seller.deposit(price)
     }
